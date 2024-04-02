@@ -1,10 +1,3 @@
-# bomber-scan
-
-this action is based on bomber by DevOps Kung Fu https://github.com/devops-kung-fu/bomber
-
-this action requires an existing SBOM file in the action workspace. you can use e.g. syft, trivy or any other SBOM generator action before this one to create the SBOM.
-
-these are the options you can set in your workflow:
 name: 'bomber-action'
 description: 'Action using DevOps Kung Fu Bomber'
 author: Drahtzieher
@@ -28,10 +21,7 @@ inputs:
   ignore-file:
     description: name of the file containing CVEs to ignore
     required: false
+runs:
+  using: docker
+  image: Dockerfile
 
-
-if you intend to use snyk or ossindex as data sources, name your secrets like this:
-SNYK_USERNAME
-SNYK_TOKEN
-OSSINDEX_USERNAME
-OSSINDEX_TOKEN
