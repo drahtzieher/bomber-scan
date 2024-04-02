@@ -2,6 +2,10 @@ name: 'bomber-action'
 description: 'Action using DevOps Kung Fu Bomber'
 author: Drahtzieher
 inputs:
+  bomber_version:
+    description: enter the release you want to use
+    required: false
+    default: v0.4.8
   sbom-file:
     description: 'the sbom file to scan or syft command to generate and pipe the SBOM iinto bomber'
     required: true
