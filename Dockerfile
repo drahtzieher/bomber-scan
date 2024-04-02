@@ -5,6 +5,8 @@ FROM alpine:latest
 RUN apk update && \
     apk add --no-cache wget curl tar jq
 
+COPY entrypoint.sh /entrypoint.sh
+
 # Set the working directory
 WORKDIR /usr/local/bin
 
