@@ -21,4 +21,4 @@ RUN wget "https://github.com/devops-kung-fu/bomber/releases/download/${BOMBER_VE
 WORKDIR /
 
 # Set the entrypoint or command for Bomber
-ENTRYPOINT ["entrypoint.sh"]  # Replace this with the actual command to start Bomber
+ENTRYPOINT ["/entrypoint.sh"]  # Replace this with the actual command to start Bomber
