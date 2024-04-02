@@ -12,7 +12,7 @@ WORKDIR /usr/local/bin
 ARG BOMBER_VERSION=v0.4.8
 
 # Fetch the specified version of Bomber from GitHub releases
-RUN wget "https://github.com/bomber-project/bomber/releases/download/${BOMBER_VERSION}/bomber_${BOMBER_VERSION#v}_linux_amd64.tar.gz" && \
+RUN wget "https://github.com/devops-kung-fu/bomber/releases/download/${BOMBER_VERSION}/bomber_${BOMBER_VERSION#v}_linux_amd64.tar.gz" && \
     tar -xzvf "bomber_${BOMBER_VERSION#v}_linux_amd64.tar.gz" && \
     rm "bomber_${BOMBER_VERSION#v}_linux_amd64.tar.gz"
 
