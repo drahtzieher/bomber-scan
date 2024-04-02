@@ -26,7 +26,7 @@ fi
 # Add credentials if required by the data provider
 case "$DATA_PROVIDER" in
     snyk)
-        command+=" --username=${{ secrets.SNYK_USERNAME }} --token=${{ secrets.SNYK_TOKEN }}"
+        command+=" --token=${{ secrets.SNYK_TOKEN }}"
         ;;
     ossindex)
         command+=" --username=${{ secrets.OSSINDEX_USERNAME }} --token=${{ secrets.OSSINDEX_TOKEN }}"
