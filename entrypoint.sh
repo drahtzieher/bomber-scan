@@ -4,7 +4,7 @@ echo 'Started ... reading parameters'
 SBOM_FILE="${INPUT_SBOM_FILE:-sbom.json}"
 DATA_PROVIDER="${INPUT_DATA_PROVIDER:-ovs}"
 OUTPUT_FORMAT="${INPUT_OUTPUT_FORMAT:-stdout}"
-OUTPUT_FILE="${INPUT_OUTPUT_FILE:-bomber_output}"
+OUTPUT_FILE="${INPUT_OUTPUT_FILE:-}"
 IGNORE_FILE="${INPUT_IGNORE_FILE:-}"
 
 # Check if SBOM file exists

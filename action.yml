@@ -21,7 +21,6 @@ inputs:
   output-file:
     description: 'filename for output file. if empty or output not set to html or json, no file will be generated.'
     required: false
-    default: bomber_output
   ignore-file:
     description: name of the file containing CVEs to ignore
     required: false
