@@ -7,49 +7,65 @@ OUTPUT_FORMAT="${INPUT_OUTPUT_FORMAT:-stdout}"
 OUTPUT_FILE="${INPUT_OUTPUT_FILE:-bomber_output}"
 IGNORE_FILE="${INPUT_IGNORE_FILE:-}"
 
+# Check if SBOM file exists
+if [ ! -f "$SBOM_FILE" ]; then
+    echo "SBOM file '$SBOM_FILE' not found. Please make sure the file exists."
+    exit 1
+fi
+
 # Construct the base command
 command="bomber"
-echo "$command"
+echo "Checking command parameters"
 # Add the ignore file option if provided
 if [ -n "$IGNORE_FILE" ]; then
     command="$command --ignore-file=$IGNORE_FILE"
-    echo '--ignore-file set'
-    echo "$command"
+    echo 'using ignore file $IGNORE_FILE'
 else
     echo '--ignore-file not set, proceeding'
-    echo "$command"
 fi
 
 # Add the scan command and SBOM file
 command="$command scan $SBOM_FILE"
-echo "$command"
+echo "SBOM file to scan: $SBOM_FILE"
 # Add the data provider option if provided
 if [ "$DATA_PROVIDER" != "ovs" ]; then
-    command="$command --provider $DATA_PROVIDER"
-    echo "$command"
+    case "$DATA_PROVIDER" in
+        snyk)
+            # Check if SNYK token is provided
+            if [ -z "${{ secrets.SNYK_TOKEN }}" ]; then
+                echo "SNYK token is missing. Please provide the token as a secret."
+                exit 1
+            fi
+            command="$command --provider $DATA_PROVIDER --token=${{ secrets.SNYK_TOKEN }}"
+            echo "You selected $DATA_PROVIDER as the vulnerability data provider"
+            ;;
+        ossindex)
+            # Check if OSSIndex credentials are provided
+            if [ -z "${{ secrets.OSSINDEX_USERNAME }}" ] || [ -z "${{ secrets.OSSINDEX_TOKEN }}" ]; then
+                echo "OSS Index credentials are missing. Please provide the username and token as secrets."
+                exit 1
+            fi
+            command="$command --provider $DATA_PROVIDER --username=${{ secrets.OSSINDEX_USERNAME }} --token=${{ secrets.OSSINDEX_TOKEN }}"
+            echo "You selected $DATA_PROVIDER as the vulnerability data provider"
+            ;;
+        *)
+            echo "Invalid data provider: $DATA_PROVIDER. Supported options are 'snyk' and 'ossindex'."
+            exit 1
+            ;;
+    esac
+else
+  echo "Using OVS as the data provider"
 fi
 
-# Add credentials if required by the data provider
-case "$DATA_PROVIDER" in
-    snyk)
-        command="$command --token=${{ secrets.SNYK_TOKEN }}"
-        echo "$command"
-        ;;
-    ossindex)
-        command="$command --username=${{ secrets.OSSINDEX_USERNAME }} --token=${{ secrets.OSSINDEX_TOKEN }}"
-        echo "$command"
-        ;;
-esac
 
 # Add the output format option
 command="$command --output=$OUTPUT_FORMAT"
-echo "$command"
+echo "Preparing output as $OUTPUT_FORMAT"
 # Add the output file option if provided
 if [ -n "$OUTPUT_FILE" ] && [ "$OUTPUT_FORMAT" != "stdout" ]; then
     command="$command > $OUTPUT_FILE"
-    echo "$command"
+    echo "Output will be saved to $OUTPUT_FILE"
 fi
 
 # Execute the constructed command
-echo "Running Bomber command: $command"
 sh -c "$command"
