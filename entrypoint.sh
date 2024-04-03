@@ -9,45 +9,45 @@ IGNORE_FILE="${INPUT_IGNORE_FILE:-}"
 
 # Construct the base command
 command="bomber"
-echo command
+echo "$command"
 # Add the ignore file option if provided
 if [ -n "$IGNORE_FILE" ]; then
-    command+=" --ignore-file=$IGNORE_FILE"
+    command="$command --ignore-file=$IGNORE_FILE"
     echo '--ignore-file set'
-    echo command
+    echo "$command"
 else
     echo '--ignore-file not set, proceeding'
-    echo command
+    echo "$command"
 fi
 
 # Add the scan command and SBOM file
-command+=" scan $SBOM_FILE"
-echo command
+command="$command scan $SBOM_FILE"
+echo "$command"
 # Add the data provider option if provided
 if [ "$DATA_PROVIDER" != "ovs" ]; then
-    command+=" --provider $DATA_PROVIDER"
-    echo command
+    command="$command --provider $DATA_PROVIDER"
+    echo "$command"
 fi
 
 # Add credentials if required by the data provider
 case "$DATA_PROVIDER" in
     snyk)
-        command+=" --token=${{ secrets.SNYK_TOKEN }}"
-        echo command
+        command="$command --token=${{ secrets.SNYK_TOKEN }}"
+        echo "$command"
         ;;
     ossindex)
-        command+=" --username=${{ secrets.OSSINDEX_USERNAME }} --token=${{ secrets.OSSINDEX_TOKEN }}"
-        echo command
+        command="$command --username=${{ secrets.OSSINDEX_USERNAME }} --token=${{ secrets.OSSINDEX_TOKEN }}"
+        echo "$command"
         ;;
 esac
 
 # Add the output format option
-command+=" --output $OUTPUT_FORMAT"
-echo command
+command="$command --output=$OUTPUT_FORMAT"
+echo "$command"
 # Add the output file option if provided
 if [ -n "$OUTPUT_FILE" ] && [ "$OUTPUT_FORMAT" != "stdout" ]; then
-    command+=" > $OUTPUT_FILE"
-    echo command
+    command="$command > $OUTPUT_FILE"
+    echo "$command"
 fi
 
 # Execute the constructed command
