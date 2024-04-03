@@ -19,7 +19,6 @@ RUN wget "https://github.com/devops-kung-fu/bomber/releases/download/${BOMBER_VE
     rm "bomber_${BOMBER_VERSION#v}_linux_amd64.tar.gz"
 
 WORKDIR /
-COPY sbom.json /sbom.json
 
 # Set the entrypoint or command for Bomber
 ENTRYPOINT ["/entrypoint.sh"]  # Replace this with the actual command to start Bomber

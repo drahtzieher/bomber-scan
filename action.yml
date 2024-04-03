@@ -7,7 +7,7 @@ inputs:
     required: false
     default: v0.4.8
   sbom-file:
-    description: 'the sbom file to scan or syft command to generate and pipe the SBOM iinto bomber'
+    description: 'the sbom file to scan '
     required: true
     default: sbom.json
   data-provider:
