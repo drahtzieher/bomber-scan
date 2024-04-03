@@ -69,4 +69,3 @@ fi
 
 # Execute the constructed command
 sh -c "$command"
-done
