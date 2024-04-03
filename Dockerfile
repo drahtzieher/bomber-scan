@@ -1,10 +1,8 @@
 # Use Alpine Linux as base image
 FROM alpine:latest
-RUN echo "Installing required packages"
 # Update package repository and install required packages
 RUN apk update && \
     apk add --no-cache wget curl tar jq
-RUN echo "Copying entrypoint.sh"
 COPY entrypoint.sh /entrypoint.sh
 
 # Set the working directory
@@ -12,12 +10,10 @@ WORKDIR /usr/local/bin
 
 # Define the default version of Bomber
 ARG BOMBER_VERSION=v0.4.8
-RUN echo "Fetching Bomber version: ${BOMBER_VERSION}"
 # Fetch the specified version of Bomber from GitHub releases
 RUN wget "https://github.com/devops-kung-fu/bomber/releases/download/${BOMBER_VERSION}/bomber_${BOMBER_VERSION#v}_linux_amd64.tar.gz" && \
     tar -xzvf "bomber_${BOMBER_VERSION#v}_linux_amd64.tar.gz" && \
     rm "bomber_${BOMBER_VERSION#v}_linux_amd64.tar.gz"
-RUN echo "Setting workdir to / and running entrypoint.sh"
 WORKDIR /
 
 # Set the entrypoint or command for Bomber
